@@ -10,8 +10,8 @@ import userRoutes from "./routes/user-routes.js";
 import authRoutes from "./routes/auth-routes.js";
 import projectRoutes from "./routes/project-routes.js";
 import issueRoutes from "./routes/issue-routes.js";
-// import cron from "node-cron";
-// import https from 'https';
+import cron from "node-cron";
+import https from 'https';
 
 dotenv.config();
 const app = express();
@@ -112,21 +112,21 @@ app.use((error, req, res, next) => {
 
 // Cron job to keep server awake (runs every 10 minutes)
 // Only run in production to avoid unnecessary requests during development
-// if (process.env.NODE_ENV === "production" && process.env.RENDER_EXTERNAL_URL) {
-//   cron.schedule("*/10 * * * *", () => {
-//     const url = process.env.RENDER_EXTERNAL_URL + "/keep-alive";
+if (process.env.NODE_ENV === "production" && process.env.RENDER_EXTERNAL_URL) {
+  cron.schedule("*/10 * * * *", () => {
+    const url = process.env.RENDER_EXTERNAL_URL + "/keep-alive";
     
-//     console.log(`Pinging server at ${new Date().toISOString()}: ${url}`);
+    console.log(`Pinging server at ${new Date().toISOString()}: ${url}`);
     
-//     https.get(url, (res) => {
-//       console.log(`Keep-alive ping successful: ${res.statusCode}`);
-//     }).on("error", (err) => {
-//       console.error("Keep-alive ping failed:", err.message);
-//     });
-//   });
+    https.get(url, (res) => {
+      console.log(`Keep-alive ping successful: ${res.statusCode}`);
+    }).on("error", (err) => {
+      console.error("Keep-alive ping failed:", err.message);
+    });
+  });
   
-//   console.log("Cron job scheduled to keep server alive every 10 minutes");
-// }
+  console.log("Cron job scheduled to keep server alive every 10 minutes");
+}
 
 
 app.listen(PORT, ()=>{
