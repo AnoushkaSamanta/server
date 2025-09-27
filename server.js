@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 connectDB()
 
 const corsOptions = { 
-  origin:["http://localhost:3000", "https://client-gilt-phi.vercel.app"],
+  origin:["http://localhost:3000","https://client-gilt-phi.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
